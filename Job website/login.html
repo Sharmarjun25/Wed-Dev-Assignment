@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login/Signup</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Login/Signup</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="upload-resume.html">Upload Resume</a>
+      <a href="jobs.html">Jobs</a>
+      <a href="about.html">About Us</a>
+      <a href="login.html">Login/Signup</a>
+    </nav>
+  </header>
+  <main>
+    <section id="login">
+      <h3>Login</h3>
+      <form id="login-form">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <button type="submit">Login</button>
+      </form>
+    </section>
+    <section id="signup">
+      <h3>Signup</h3>
+      <form id="signup-form">
+        <label for="new-email">Email:</label>
+        <input type="email" id="new-email" name="email" required>
+        <label for="new-password">Password:</label>
+        <input type="password" id="new-password" name="password" required>
+        <button type="submit">Signup</button>
+      </form>
+    </section>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>

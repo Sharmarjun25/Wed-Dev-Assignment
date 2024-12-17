@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CareerBridge</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 20px auto;
+    }
+
+    .job-listing {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .job-card {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .job-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .job-card h3 {
+      margin: 0 0 10px;
+      font-size: 1.2rem;
+      color: #333;
+    }
+
+    .job-card p {
+      margin: 5px 0;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .job-card .skills {
+      margin-top: 10px;
+      font-size: 0.8rem;
+      color: #777;
+    }
+
+    .job-card .skills span {
+      display: inline-block;
+      background: #007bff;
+      color: #ffffff;
+      padding: 5px 8px;
+      border-radius: 4px;
+      margin-right: 5px;
+      margin-top: 5px;
+    }
+
+    .job-card .remote {
+      color: #28a745;
+      font-weight: bold;
+    }
+
+    header {
+    background-color: #02040a;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+  }
+  
+  nav a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+  }
+
+  .search-container {
+      background-color: #007bff;
+      padding: 20px;
+      text-align: center;
+    }
+    .search-container input {
+      width: 70%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .search-container button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #0056b3;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .search-container button:hover {
+      background-color: #003d80;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Welcome to CareerBridge</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="upload-resume.html">Upload Resume</a>
+      <a href="jobs.html">Jobs</a>
+      <a href="about.html">About Us</a>
+      <a href="login.html">Login/Signup</a>
+    </nav>
+  </header>
+  <div class="search-container">
+    <input type="text" id="jobSearchInput" placeholder="Search for jobs...">
+    <button onclick="searchJobs()">Search</button>
+  </div>
+  <div class="container">
+    <h1>Job Board</h1>
+    <div id="job-list" class="job-listing"></div>
+  </div>
+  <script>
+    // JavaScript code goes here
+    // JSON data for job listings
+const jobListings = [
+  {
+    jobId: 1,
+    title: "Software Engineer",
+    company: "Tech Innovators",
+    location: "San Francisco, CA",
+    type: "Full-time",
+    salary: "$100,000 - $120,000 per year",
+    description: "Develop and maintain scalable web applications.",
+    skills: ["Java", "Spring Boot", "MySQL", "REST APIs"],
+    postedDate: "2024-12-15",
+    remote: false
+  },
+  {
+    jobId: 2,
+    title: "Frontend Developer",
+    company: "DesignWorks",
+    location: "Remote",
+    type: "Part-time",
+    salary: "$40 - $50 per hour",
+    description: "Build and optimize user interfaces for web applications.",
+    skills: ["HTML", "CSS", "JavaScript", "React.js"],
+    postedDate: "2024-12-12",
+    remote: true
+  },
+  {
+    jobId: 3,
+    title: "Backend Developer",
+    company: "CodeCrafters",
+    location: "Austin, TX",
+    type: "Full-time",
+    salary: "$90,000 - $110,000 per year",
+    description: "Develop robust backend services and APIs.",
+    skills: ["Node.js", "Express.js", "MongoDB", "AWS"],
+    postedDate: "2024-12-10",
+    remote: false
+  },
+  {
+    jobId: 4,
+    title: "Full Stack Developer",
+    company: "DevSolutions",
+    location: "New York, NY",
+    type: "Contract",
+    salary: "$70 - $85 per hour",
+    description: "Work on both frontend and backend development tasks.",
+    skills: ["Angular", "Java", "SQL", "Docker"],
+    postedDate: "2024-12-08",
+    remote: false
+  },
+  {
+    jobId: 5,
+    title: "Mobile App Developer",
+    company: "AppVentures",
+    location: "Seattle, WA",
+    type: "Full-time",
+    salary: "$95,000 - $115,000 per year",
+    description: "Develop mobile applications for iOS and Android.",
+    skills: ["Swift", "Kotlin", "Flutter", "Firebase"],
+    postedDate: "2024-12-07",
+    remote: false
+  },
+  {
+    jobId: 6,
+    title: "DevOps Engineer",
+    company: "CloudOps Inc.",
+    location: "Remote",
+    type: "Full-time",
+    salary: "$110,000 - $130,000 per year",
+    description: "Manage and automate cloud infrastructure.",
+    skills: ["Kubernetes", "Docker", "AWS", "Terraform"],
+    postedDate: "2024-12-05",
+    remote: true
+  },
+  {
+    jobId: 7,
+    title: "Data Scientist",
+    company: "Data Insights",
+    location: "Boston, MA",
+    type: "Full-time",
+    salary: "$115,000 - $135,000 per year",
+    description: "Analyze large datasets to extract actionable insights.",
+    skills: ["Python", "Machine Learning", "SQL", "TensorFlow"],
+    postedDate: "2024-12-03",
+    remote: false
+  },
+  {
+    jobId: 8,
+    title: "Game Developer",
+    company: "GameWorld Studios",
+    location: "Los Angeles, CA",
+    type: "Full-time",
+    salary: "$80,000 - $100,000 per year",
+    description: "Develop engaging video games for multiple platforms.",
+    skills: ["Unity", "C#", "Blender", "Unreal Engine"],
+    postedDate: "2024-12-02",
+    remote: false
+  },
+  {
+    jobId: 9,
+    title: "UI/UX Designer",
+    company: "DesignLab",
+    location: "Chicago, IL",
+    type: "Contract",
+    salary: "$60 - $75 per hour",
+    description: "Design intuitive user interfaces and experiences.",
+    skills: ["Figma", "Adobe XD", "Sketch", "HTML/CSS"],
+    postedDate: "2024-12-01",
+    remote: false
+  },
+  {
+    jobId: 10,
+    title: "AI Engineer",
+    company: "FutureTech AI",
+    location: "Remote",
+    type: "Full-time",
+    salary: "$120,000 - $150,000 per year",
+    description: "Develop AI models and systems for various applications.",
+    skills: ["Python", "PyTorch", "NLP", "Deep Learning"],
+    postedDate: "2024-11-28",
+    remote: true
+  }
+];
+
+// Render job listings dynamically
+const jobList = document.getElementById("job-list");
+
+jobListings.forEach((job) => {
+  const jobCard = document.createElement("div");
+  jobCard.className = "job-card";
+
+  jobCard.innerHTML = `
+    <h3>${job.title}</h3>
+    <p><strong>Company:</strong> ${job.company}</p>
+    <p><strong>Location:</strong> ${job.remote ? "<span class='remote'>Remote</span>" : job.location}</p>
+    <p><strong>Type:</strong> ${job.type}</p>
+    <p><strong>Salary:</strong> ${job.salary}</p>
+    <p>${job.description}</p>
+    <div class="skills"><strong>Skills:</strong> ${job.skills.map(skill => `<span>${skill}</span>`).join("")}</div>
+    <p><small>Posted on: ${job.postedDate}</small></p>
+  `;
+
+  jobList.appendChild(jobCard);
+});
+
+
+  </script>
+</body>
+</html>
